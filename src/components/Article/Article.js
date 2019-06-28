@@ -6,11 +6,13 @@ const Article = (props) => (
   <>
     <h1>{props.title}</h1>
     <div>Tags:</div>
-    <ul className="tags">{props.tags.map(item => {
-      return (
-        <li className="tag">{item.name}</li>
-      )
-    })}</ul>
+    {props.tag &&
+      <ul className="tags">{props.tags.map(item => {
+        return (
+          <li className="tag">{item.name}</li>
+        )
+      })}</ul>
+    }
     {props.series && <div className="series"><strong>Series: </strong>{props.series}</div>}
     {props.video && <Youtube video={props.video} />}
     {props.episode && <div className="episode" style={{ fontWeight: `bold` }}>Daily Dose of Drupal Episode #{props.series}</div>}
