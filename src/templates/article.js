@@ -13,7 +13,7 @@ const articleTemplate = (props) => {
   if (article.relationships.video) {
     video = article.relationships.video.src.replace("watch?v=", "embed/");
   }
-  if (article.relationships.series) {
+  if (article.relationships.series && article.relationships.series[0]) {
     series = article.relationships.series[0].name;
   }
   if (article.relationships.tags) {
