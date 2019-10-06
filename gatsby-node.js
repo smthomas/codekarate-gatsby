@@ -1,47 +1,106 @@
 const path = require(`path`);
+const { paginate } = require('gatsby-awesome-pagination')
+const { ensureTrailingSlash } = require('./src/utils/trailingSlash');
 
-exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions;
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage, createRedirect } = actions;
 
-  return new Promise((resolve, reject) => {
-    graphql(`
-      {
-        allNodeArticle {
-          edges {
-            node {
-              drupal_id
+  // Create pages for learning library.
+  const learningLibrary = await graphql(`
+    {
+      allNodeLearningLibrary {
+        nodes {
+          id
+          title
+          path {
+            alias
+          }
+        }
+      }
+    }
+  `);
+  paginate({
+    createPage,
+    items: learningLibrary.data.allNodeLearningLibrary.nodes,
+    itemsPerPage: 10,
+    pathPrefix: ({ pageNumber }) => (pageNumber === 0 ? `/` : `/library`),
+    component: path.resolve(`src/templates/library.js`),
+  });
+  learningLibrary.data.allNodeLearningLibrary.nodes.map(learningLibrary =>
+    createPage({
+      path: ensureTrailingSlash(learningLibrary.path.alias),
+      component: path.resolve(`src/templates/libraryLesson.js`),
+      context: {
+        LessonId: learningLibrary.id,
+      },
+    })
+  );
+
+  // Create pages for courses and course lessons.
+  const course = await graphql(`
+    {
+      allNodeCourse {
+        nodes {
+          id
+          title
+          path {
+            alias
+          }
+          relationships {
+            course_lessons {
+              id
               title
-              path {
-                alias
-              }
             }
           }
         }
       }
-    `).then(result => {
-      result.data.allNodeArticle.edges.forEach(({ node }) => {
-        let path_alias;
-        if (node.path.alias == null) {
-          path_alias = `node/${node.drupal_id}`;
-        } else {
-          path_alias = node.path.alias;
-        }
-
-        createPage({
-          // This is the path, or route, at which the page will be visible.
-          path: path_alias,
-          // This the path to the file that contains the React component
-          // that will be used to render the HTML for the article.
-          component: path.resolve(`./src/templates/article.js`),
-          context: {
-            // Data passed to context is available in page queries as GraphQL
-            // variables.
-            drupal_id: node.drupal_id
-          }
-        });
-      });
-
-      resolve();
+    }
+  `);
+  course.data.allNodeCourse.nodes.map(course => {
+    createPage({
+      path: ensureTrailingSlash(course.path.alias),
+      component: path.resolve(`src/templates/course.js`),
+      context: {
+        CourseId: course.id,
+      },
     });
+    course.relationships.course_lessons.map((lesson, index) =>
+      createPage({
+        path: ensureTrailingSlash(course.path.alias + 'lesson/' + index),
+        component: path.resolve(`src/templates/lesson.js`),
+        context: {
+          LessonId: lesson.id,
+        },
+      })
+    );
   });
+
+  // Create all the necessary redirects.
+  if (process.env.NODE_ENV === 'production') {
+    const redirects = await graphql(`
+      {
+        allRedirectRedirect {
+          edges {
+            node {
+              redirect_source {
+                path
+              }
+              redirect_redirect {
+                uri
+              }
+              status_code
+            }
+          }
+        }
+      }
+    `);
+
+    redirects.data.allRedirectRedirect.edges.map(redirect => {
+      createRedirect({
+        fromPath: `/${redirect.node.redirect_source.path}`,
+        toPath: redirect.node.redirect_redirect.uri.replace('internal:', ''),
+        statusCode: redirect.node.status_code,
+      });
+    });
+  }
 };

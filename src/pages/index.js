@@ -1,61 +1,40 @@
-import React from "react"
-import { graphql } from "gatsby";
-import Layout from "../components/Layout/Layout"
-import ArticleTeaser from "../components/ArticleTeaser/ArticleTeaser";
+import React, { Component } from "react";
+import Layout from "../components/Layout";
+import Hero from "../components/Hero";
+import SplitSection from "../components/SplitSection";
+import FullWidthCTA from "../components/FullWidthCTA";
 
-const IndexPage = (props) => {
-  const articles = props.data.allNodeArticle.edges;
-  const articleTeasers = articles.map(article => {
-    let video = "";
-    if (article.node.relationships.video) {
-      video = article.node.relationships.video.src.replace("watch?v=", "embed/");
-    }
-    let path_alias;
-    if (article.node.path.alias == null) {
-      path_alias = `node/${article.node.drupal_id}`;
-    } else {
-      path_alias = article.node.path.alias;
-    }
-    return (
-      <ArticleTeaser
-        title={article.node.title}
-        created={article.node.created}
-        video={video}
-        body={article.node.body.processed}
-        path_alias={path_alias}
-      />
-    );
-  });
+class IndexPage extends Component {
+  render() {
 
-  return <Layout>
-    <h1>Code Karate Content</h1>
-    {articleTeasers}
-  </Layout>;
-};
+    return <Layout>
+      Testing
+      {/* <Hero />
+      <SplitSection title="Learning Styles" />
+      <SplitSection title="Adaptive Learning" />
+      <SplitSection title="Code Syncing" />
+      <SplitSection title="Full Course Guides" />
+      <SplitSection title="Slider/Community" />
+      <FullWidthCTA /> */}
 
-export default IndexPage;
-
-export const query = graphql`
-  query pageQuery {
-    allNodeArticle(sort: {fields: [created], order:DESC}, limit: 25) {
-      edges {
-        node {
-          drupal_id
-          title
-          created(formatString: "DD-MMM-YYYY")
-          body {
-            processed
-          }
-          path {
-            alias
-          }
-          relationships {
-            video: field_video {
-              src: field_media_oembed_video
-            }
-          }
-        }
-      }
-    }
+    </Layout>;
   }
-`
+}
+
+export default IndexPage
+
+// export const query = graphql`
+//   query pageQuery {
+//     allNodeArticle {
+//       edges {
+//         node {
+//           title
+//           created(formatString: "DD-MMM-YYYY")
+//           body {
+//             value
+//           }
+//         }
+//       }
+//     }
+//   }
+// `
