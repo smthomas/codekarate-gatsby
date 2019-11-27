@@ -1,15 +1,16 @@
 import React from "react";
-import { Link } from "gatsby";
 import { css } from '@emotion/core';
 
 import { colors } from '../../styles';
 
-const Button = props => {
+const QuizButton = props => {
   const buttonStyle = css`
+    cursor: pointer;
     background-color: ${colors.white};
     color: ${colors.red};
-    padding: 10px;
+    padding: 12px;
     border-radius: 5px;
+    margin: 0 12px;
 
     &:hover {
       background-color: ${colors.darkgray};
@@ -17,9 +18,13 @@ const Button = props => {
     }
   `;
 
+  const handleClick = () => {
+    props.onButtonClick(props.value);
+  }
+
   return (
-    <Link css={buttonStyle} to={props.to}>{props.children}</Link>
+    <span css={buttonStyle} onClick={handleClick}>{props.title}</span>
   );
 }
 
-export default Button;
+export default QuizButton;

@@ -28,6 +28,12 @@ module.exports = {
         },
       }
     },
+    {
+      resolve: 'gatsby-plugin-mailchimp',
+      options: {
+        endpoint: 'https://codekarate.us2.list-manage.com/subscribe/post?u=64a555e4a8f7af34baca245be&amp;id=add2e2f22d',
+      },
+    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,

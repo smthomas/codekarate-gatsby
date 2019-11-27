@@ -1,7 +1,7 @@
 // Global CSS Styles
 import { css } from '@emotion/core';
 
-import { colors, fonts, weights, mediaQueries } from './css-utils';
+import { colors } from './css-utils';
 
 export const globalStyles = css`
   body{
