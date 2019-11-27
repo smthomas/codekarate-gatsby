@@ -33,8 +33,8 @@ const FooterMenu = props => {
     <div css={containerStyle}>
       <h3 css={headerStyle}>{props.title}</h3>
       <ul css={listStyle}>
-        {props.menuItems.map(menuItem => {
-          return <li><Link css={linkStyle} to={menuItem.link}>{menuItem.title}</Link></li>
+        {props.menuItems.map((menuItem, i) => {
+          return <li key={i}><Link css={linkStyle} to={menuItem.link}>{menuItem.title}</Link></li>
         })}
       </ul>
     </div>

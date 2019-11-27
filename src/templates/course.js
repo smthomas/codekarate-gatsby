@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { css } from '@emotion/core';
 import { graphql } from 'gatsby';
 import Helmet from 'react-helmet';
-import Img from 'gatsby-image';
-import { colors, mediaQueries, jsBreakpoints } from '../styles';
+
 import Layout from '../components/Layout';
 
 const Course = ({ data }) => {

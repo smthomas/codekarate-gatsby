@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { css } from '@emotion/core';
 import { Link } from "gatsby";
 
-import { container, colors } from '../../styles';
 import Icon from '../Icon';
 
 const Pager = ({ pageContext }) => {

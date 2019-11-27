@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql, navigate } from 'gatsby';
-import { css } from '@emotion/core';
+import { graphql } from 'gatsby';
 
 import LibraryPreview from '../components/LibraryPreview';
 import Layout from '../components/Layout';
-import { ensureTrailingSlash } from '../utils/trailingSlash';
 
 const Library = ({ data }) => {
   const items = data.allNodeLearningLibrary.nodes;

@@ -36,4 +36,5 @@ export const sizes = {
   l: `24px`,
   xl: `28px`,
   xxl: `36px`,
+  xxxl: `42px`,
 };

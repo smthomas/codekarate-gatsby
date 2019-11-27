@@ -9,7 +9,7 @@ import { container, colors, sizes } from '../../../styles';
 const Header = props => {
   const wrapperStyle = css`
     height: 60px;
-    background-color: red;
+    background-color: ${colors.red};
     color: ${colors.white};
   `;
   const headerStyle = css`
